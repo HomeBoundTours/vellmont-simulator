@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vellmont Business Impact Simulator
 
-## Getting Started
+A production-ready, client-facing business impact modeling platform for Vellmont Consulting.
 
-First, run the development server:
+## Overview
+
+Helps business owners visualize the financial and operational impact of revenue growth, capacity improvements, operational consulting, and SOP/documentation initiatives. Designed for discovery calls, strategy sessions, and sales presentations.
+
+**This is a Business Impact Modeling Platform — not an ROI calculator.** All outputs are user-generated scenario models for planning purposes only.
+
+## Tech Stack
+
+- **Next.js 16** (App Router, Static Export)
+- **TypeScript** + **Tailwind CSS v4**
+- **Recharts** — interactive data visualizations
+- **Framer Motion** — smooth animations
+- **jsPDF** — branded PDF report generation
+- **idb** — IndexedDB local data persistence
+- **PWA** — installable, works offline
+
+## Features
+
+- 7 tabs: Overview, Revenue Impact, Capacity Impact, SOP & Docs, Operational Efficiency, Service Bundle Builder, Executive Summary
+- Client information capture included on all exported reports
+- Save / Load / Delete assessments locally (IndexedDB — no backend)
+- PDF report generation — professional branded consulting deliverable
+- JSON and CSV data export
+- Presentation Mode — input-free full-screen view for client calls
+- PWA — installable on mobile and desktop, offline-capable
+- Mobile-first responsive design
+
+## Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+Output is in `out/` — fully static, no server required.
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Netlify
+- Build command: `npm run build`
+- Publish directory: `out`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Vercel
+```bash
+npx vercel
+```
 
-## Deploy on Vercel
+### GitHub Pages
+1. Run `npm run build`
+2. Push `out/` contents to `gh-pages` branch
+3. Enable GitHub Pages in repo settings
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Any Static Host
+Upload `out/` to any CDN (Cloudflare Pages, AWS S3, etc.)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Architecture
+
+```
+vellmont-simulator/
+├── app/                    # Next.js App Router
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── globals.css
+├── components/
+│   ├── layout/             # Header, Navigation
+│   ├── tabs/               # 7 assessment tab components
+│   ├── ui/                 # KpiCard, SliderInput, NumberInput, SectionCard
+│   ├── SimulatorApp.tsx
+│   ├── ClientInfoForm.tsx
+│   ├── SaveLoadModal.tsx
+│   └── ExportModal.tsx
+├── context/
+│   └── AssessmentContext.tsx
+├── lib/
+│   ├── calculations.ts
+│   ├── storage.ts          # IndexedDB layer
+│   ├── defaults.ts
+│   ├── pdfExport.ts        # jsPDF report generation
+│   └── exportUtils.ts
+├── types/
+│   └── index.ts
+└── public/
+    ├── manifest.json       # PWA manifest
+    ├── sw.js               # Service worker
+    └── icons/
+```
+
+## Disclaimer
+
+All calculations are based on user-provided assumptions and are intended solely for planning and business modeling purposes. Vellmont Consulting does not guarantee specific financial or operational outcomes.
